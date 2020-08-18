@@ -1,7 +1,7 @@
-﻿using System;
+﻿using BAMC.Enumerables;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using static BAMC.BAMCEnumerables;
 
 namespace BAMC.Packets
 {
