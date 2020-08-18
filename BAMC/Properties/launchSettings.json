@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BAMC": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
