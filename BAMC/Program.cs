@@ -7,8 +7,8 @@ namespace BAMC
 {
     class Program
     {
-        static TcpListener Server = new TcpListener(IPAddress.Any, 25565);
-        static void Main(string[] args)
+        static readonly TcpListener Server = new TcpListener(IPAddress.Any, 25565);
+        static void Main(/*string[] args*/)
         {
             Console.WriteLine("Starting server...");
             Server.Start();

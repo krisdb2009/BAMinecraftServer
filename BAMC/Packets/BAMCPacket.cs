@@ -1,7 +1,5 @@
 ﻿using BAMC.Enumerables;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BAMC.Packets
 {
@@ -14,9 +12,9 @@ namespace BAMC.Packets
         public BAMCPacket(byte[] RawPacket, BAMCClient Client)
         {
             int index = 0;
-            index = RawPacket.GetVarInt(index, out Length);
-            int packetType;
-            RawPacket.GetVarInt(index, out packetType);
+            index = RawPacket.ReadVarInt(index, out Length);
+            int indexCompare = RawPacket.ReadVarInt(index, out int packetType);
+            Length -= indexCompare - index;
             PacketID = (PacketID)packetType;
             Payload = new byte[Length];
             this.Client = Client;
@@ -32,22 +30,16 @@ namespace BAMC.Packets
             Payload = Packet.Payload;
             Client = Packet.Client;
         }
-    }
-    public class BAMCPacketInitialHandshake : BAMCPacket
-    {
-        public int MCProtocolVersion;
-        public string ServerAddress;
-        public ushort ServerPort;
-        public BAMCClientState NextState;
-        public BAMCPacketInitialHandshake(BAMCPacket Packet) : base(Packet)
+        public BAMCPacket() { }
+        public virtual void Send()
         {
-            int index = 0;
-            index = Payload.GetVarInt(index, out MCProtocolVersion);
-            index = Payload.GetString(index, out ServerAddress);
-            index = Payload.GetUShort(index, out ServerPort);
-            int nextState;
-            Payload.GetVarInt(index, out nextState);
-            NextState = (BAMCClientState)nextState;
+            byte[] packetID = new List<byte>().WriteVarInt((int)PacketID).ToArray();
+            List<byte> buffer = new List<byte>();
+            buffer.WriteVarInt(Payload.Length + packetID.Length);
+            buffer.AddRange(packetID);
+            buffer.AddRange(Payload);
+            Client.Stream.Write(buffer.ToArray());
+            Client.Stream.Flush();
         }
     }
 }

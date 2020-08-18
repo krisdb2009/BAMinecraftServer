@@ -1,5 +1,6 @@
 ﻿using BAMC.Enumerables;
 using BAMC.Packets;
+using BAMC.Packets.Inbound;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -54,11 +55,6 @@ namespace BAMC
                     Disconnect();
                 }
             });
-        }
-        private void RespondToPing()
-        {
-            StreamWriter.Write("\x7a\x00\x78{\"description\":{\"text\":\"A Minecraft Server\"},\"players\":{\"max\":20,\"online\":0},\"version\":{\"name\":\"1.16.2\",\"protocol\":751}}");
-            StreamWriter.Flush();
         }
     }
 }

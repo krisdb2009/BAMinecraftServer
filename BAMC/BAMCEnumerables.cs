@@ -6,7 +6,8 @@ namespace BAMC.Enumerables
 {
     public enum PacketID
     {
-        Handshake = 0x00
+        Handshake = 0x00,
+        PingPong = 0x01
     }
     public enum BAMCClientState
     {
